@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="war" build-on-make="true" name="cracks:war">
-    <output-path>$PROJECT_DIR$/web/WEB-INF/classes/artifacts/war</output-path>
+    <output-path>$PROJECT_DIR$/target</output-path>
     <root id="archive" name="cracks.war">
       <element id="artifact" artifact-name="cracks:war exploded" />
     </root>

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.*;
@@ -32,6 +33,7 @@ public class test extends HttpServlet {
     // 上传文件存储目录
     private static final String UPLOAD_DIRECTORY = "/Users/macos/Desktop/";
 
+    // 定义文件起始位置类
     class Position {
         int begin;
         int end;
@@ -41,32 +43,6 @@ public class test extends HttpServlet {
         }
     }
 
-    private void writeTo(String filename, byte[] body, Position p)
-            throws FileNotFoundException, IOException {
-        FileOutputStream fileOutputStream =
-                new FileOutputStream(UPLOAD_DIRECTORY + filename);
-        fileOutputStream.write(body, p.begin, (p.end - p.begin));
-        fileOutputStream.flush();
-        fileOutputStream.close();
-    }
-
-    private Position getFilePosition(HttpServletRequest request, String textBody) throws IOException {
-
-        String contentType = request.getContentType();
-        String boundaryText = contentType.substring(
-                contentType.lastIndexOf("=") + 1, contentType.length());
-        int pos = textBody.indexOf("filename=\"");
-        pos = textBody.indexOf("\n", pos) + 1;
-        pos = textBody.indexOf("\n", pos) + 1;
-        pos = textBody.indexOf("\n", pos) + 1;
-        int boundaryLoc = textBody.indexOf(boundaryText, pos) -4;
-        int begin = ((textBody.substring(0,
-                pos)).getBytes("ISO-8859-1")).length;
-        int end = ((textBody.substring(0,
-                boundaryLoc)).getBytes("ISO-8859-1")).length;
-
-        return new Position(begin, end);
-    }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(HttpServletRequest request, ModelMap map) {
@@ -75,7 +51,7 @@ public class test extends HttpServlet {
         System.out.println(code);
         Set<String> collections = mongoTemplate.getCollectionNames();
         for (String name:collections
-             ) {
+                ) {
             System.out.println(name);
         }
         map.put("name","myname");
@@ -117,10 +93,51 @@ public class test extends HttpServlet {
         response.getWriter().close();
     }
 
+    // 获取上传文件并写入本地
+    private void writeTo(String filename, byte[] body, Position p)
+            throws FileNotFoundException, IOException {
+        FileOutputStream fileOutputStream =
+                new FileOutputStream(UPLOAD_DIRECTORY + filename);
+        fileOutputStream.write(body, p.begin, (p.end - p.begin));
+        fileOutputStream.flush();
+        fileOutputStream.close();
+    }
+
+    // 获取上传文件起始位置
+    private Position getFilePosition(HttpServletRequest request, String textBody) throws IOException {
+
+        String contentType = request.getContentType();
+        String boundaryText = contentType.substring(
+                contentType.lastIndexOf("=") + 1, contentType.length());
+        int pos = textBody.indexOf("filename=\"");
+        pos = textBody.indexOf("\n", pos) + 1;
+        pos = textBody.indexOf("\n", pos) + 1;
+        pos = textBody.indexOf("\n", pos) + 1;
+        int boundaryLoc = textBody.indexOf(boundaryText, pos) -4;
+        int begin = ((textBody.substring(0,
+                pos)).getBytes("ISO-8859-1")).length;
+        int end = ((textBody.substring(0,
+                boundaryLoc)).getBytes("ISO-8859-1")).length;
+
+        return new Position(begin, end);
+    }
+
+    // 读取request请求数据
     private byte[] readBody(HttpServletRequest request)
             throws IOException{
         int formDataLength = request.getContentLength();
         DataInputStream dataStream = new DataInputStream(request.getInputStream());
+//
+//        StringBuffer sb = new StringBuffer() ;
+//        InputStreamReader reader = new InputStreamReader(dataStream);
+//        BufferedReader br = new BufferedReader(reader);
+//        String s = "" ;
+//        while((s=br.readLine())!=null){
+//            sb.append(s) ;
+//        }
+//        String str =sb.toString();
+//        System.out.println(str);
+
         byte body[] = new byte[formDataLength];
         int totalBytes = 0;
         while (totalBytes < formDataLength) {
@@ -131,6 +148,7 @@ public class test extends HttpServlet {
     }
 
 
+    // 读取上传文件名
     private String getFilename(String reqBody) {
         String filename = reqBody.substring(
                 reqBody.indexOf("filename=\"") + 10);
