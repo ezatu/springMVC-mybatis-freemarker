@@ -14,6 +14,14 @@
 
   <dependencies>
 
+    <!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.20</version>
+    </dependency>
+
+
     <!-- https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver -->
     <dependency>
       <groupId>org.mongodb</groupId>
@@ -121,6 +129,11 @@
           <artifactId>json-lib</artifactId>
           <version>2.4</version>
       </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <version>4.2.5.RELEASE</version>
+    </dependency>
 
   </dependencies>
   <build>

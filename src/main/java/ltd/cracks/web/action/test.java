@@ -1,6 +1,7 @@
 package ltd.cracks.web.action;
 
 import ltd.cracks.service.mongo.mongoServiceImpl;
+import org.bson.Document;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -11,10 +12,16 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.lang.annotation.Documented;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by macos on 2017/4/14.
@@ -39,19 +46,24 @@ public class test extends HttpServlet {
         }
     }
 
-
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(HttpServletRequest request, ModelMap map) {
+    public String index(HttpServletRequest request, HttpServletResponse response, ModelMap map) throws Exception {
         logger.info("start request");
-        mongoService.findDocuments("test");
+        ArrayList<Document> list = mongoService.findDocuments("test");
         String code = request.getParameter("code");
         System.out.println(code);
-        map.put("name","myname");
+        map.put("list",list);
         return "index";
     }
 
+    @RequestMapping(value = "/hello", method = RequestMethod.GET)
+    public ModelAndView hello(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ModelAndView view = new ModelAndView("hello");
+        ArrayList<Document> list = mongoService.findDocuments("test");
+        view.addObject("data",list);
+        return view;
+    }
 
-    @ResponseBody
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public void upload(HttpServletRequest request, HttpServletResponse response, ModelMap map) throws IOException {
         byte[] body = readBody(request);
@@ -60,7 +72,6 @@ public class test extends HttpServlet {
         Position p = getFilePosition(request, textBody);
         writeTo(filename, body, p);
 
-
         /**
          * 设置返回类型
          */
@@ -68,6 +79,7 @@ public class test extends HttpServlet {
         /**
          * 设置字符集 避免乱码 和页面字符集保持一致
          */
+        response.setCharacterEncoding("UTF-8");
 
         JSONArray jsonArray = new JSONArray();
         for (int i=0;i<10;i ++) {
@@ -78,7 +90,7 @@ public class test extends HttpServlet {
             jsonArray.put(jsonObject);
         }
 
-        response.setCharacterEncoding("UTF-8");
+        // 返回结果
         response.getWriter().write(jsonArray.toString());
         response.getWriter().flush();
         response.getWriter().close();
