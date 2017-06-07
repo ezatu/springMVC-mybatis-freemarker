@@ -19,7 +19,7 @@
 <body>
 <script type="text/javascript">
     function onclickBtn() {
-        alert(${data});
+        <#--alert(${data});-->
     }
 </script>
 </html>
