@@ -1,4 +1,4 @@
-# JAVA-SpringMVC-mongoDB
+# SpringMVC-mongoDB-freemarker
 简单的springmvc整合mongodb的示例demo
 
 1、集成springmvc框架；
