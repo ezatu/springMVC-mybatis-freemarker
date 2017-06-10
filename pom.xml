@@ -150,6 +150,7 @@
           <groupId>net.sf.json-lib</groupId>
           <artifactId>json-lib</artifactId>
           <version>2.4</version>
+          <classifier>jdk15</classifier>
       </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -170,5 +171,13 @@
               </configuration>
           </plugin>
       </plugins>
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+          <includes>
+            <include>**/*.xml</include>
+          </includes>
+      </resource>
+    </resources>
   </build>
 </project>

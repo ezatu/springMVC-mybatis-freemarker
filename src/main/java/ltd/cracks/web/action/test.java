@@ -1,5 +1,8 @@
 package ltd.cracks.web.action;
 
+import ltd.cracks.service.front.user.User;
+import ltd.cracks.service.front.user.UserDao;
+import ltd.cracks.service.front.user.UserDaoImpl;
 import ltd.cracks.util.*;
 import ltd.cracks.service.mongo.mongoService;
 import org.bson.Document;
@@ -23,6 +26,7 @@ import java.lang.annotation.Documented;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +37,9 @@ public class test extends HttpServlet {
 
     @Autowired
     private mongoService mongoService;
+
+    @Autowired
+    private UserDao userDao;
 
     private static final Logger logger = LoggerFactory.getLogger(test.class);
 
@@ -53,6 +60,11 @@ public class test extends HttpServlet {
         ModelAndView view = new ModelAndView("hello");
         ArrayList<Document> list = mongoService.findDocuments("test");
         view.addObject("data",list);
+        User user = new User();
+        user.setUserName("ceshi123");
+        user.setAge("123");
+        user.setId(10);
+        userDao.save(user);
         return view;
     }
 

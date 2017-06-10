@@ -8,8 +8,11 @@
     <!--指明 controller 所在包，并扫描其中的注解-->
     <context:component-scan base-package="ltd.cracks.web.action"/>
     <context:component-scan base-package="ltd.cracks.service.mongo"/>
-
+    <context:component-scan base-package="ltd.cracks.service.front.user" />
+    <!--引入mongodb配置文件-->
     <import resource="spring-mongo.xml" />
+    <!--引入mybatis配置文件-->
+    <import resource="spring-mybatis.xml" />
 
     <!-- 静态资源(js、image等)的访问 -->
     <mvc:default-servlet-handler/>
@@ -19,19 +22,12 @@
 
     <!--视图解释器 -->
     <!--配置jsp视图解析器 -->
-    <!--用于支持Servlet、JSP视图解析-->
-    <!--<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
-        <!--<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>-->
-        <!--<property name="prefix" value="/WEB-INF/pages/"/>-->
-        <!--<property name="suffix" value=".jsp"/>-->
-        <!--<property name="order" value="1"/>-->
-    <!--</bean>-->
-    <!--JSP视图解析器-->
     <bean id="viewResolverJsp" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/pages/"/>
         <property name="suffix" value=".jsp"/>
         <property name="viewClass" value="org.springframework.web.servlet.view.InternalResourceView"/>
         <property name="order" value="1"/>
+        <property name="contentType" value="text/html; charset=UTF-8" />
     </bean>
 
     <!-- 配置freeMarker视图解析器 -->
