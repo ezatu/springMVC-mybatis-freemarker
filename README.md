@@ -13,6 +13,7 @@
 
 6、集成log4j进行日志处理。
 
+7、集成mybatis。
 
 部署环境：OSX+tomcat+CentOS7+mongoDB+IDEA
 
