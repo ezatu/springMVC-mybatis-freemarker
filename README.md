@@ -1,19 +1,19 @@
-# SpringMVC-mongoDB-freemarker
+# SpringMVC-mybatis-mongoDB/MYSQL-freemarker
 简单的springmvc整合mongodb的示例demo
 
 1、集成springmvc框架；
 
-2、注入MongoTemplate实例BEAN；
+2、集成mongodb配置（spring-mongo.xml）；
 
 3、实现url拦截器；
 
-4、简单实现了文件上传功能。
+4、简单实现了文件上传功能（uploadutil）。
 
 5、集成freemarker引擎，同时支持jsp，默认优先选择.ftl页面。
 
 6、集成log4j进行日志处理。
 
-7、集成mybatis。
+7、集成mybatis配置（spring-mybatis.xml）。
 
 部署环境：OSX+tomcat+CentOS7+mongoDB+IDEA
 
