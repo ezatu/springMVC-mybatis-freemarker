@@ -9,18 +9,20 @@
 <mapper namespace="ltd.cracks.service.front.user.UserDao">
 
     <resultMap id="User" type="ltd.cracks.service.front.user.User">
-        <id column="id" property="user_id" jdbcType="BIGINT"/>
-        <result column="user_name" property="user_name" jdbcType="BIGINT"/>
-        <result column="user_age" property="user_age" jdbcType="VARCHAR"/>
+        <id column="user_id" property="id" jdbcType="BIGINT"/>
+        <result column="user_name" property="userName" jdbcType="BIGINT"/>
+        <result column="user_age" property="age" jdbcType="VARCHAR"/>
+        <result column="insertTime" property="insertTime" jdbcType="TIMESTAMP" />
     </resultMap>
     <parameterMap id="User" type="ltd.cracks.service.front.user.User">
         <parameter property="id" jdbcType="BIGINT"/>
         <parameter property="userName" jdbcType="VARCHAR"/>
         <parameter property="age" jdbcType="VARCHAR"/>
+        <parameter property="insertTime" jdbcType="TIMESTAMP" />
     </parameterMap>
 
     <insert id="save" parameterMap="User">
-        insert into t_user(user_name,user_age) values(#{userName},#{age})
+        insert into t_user(user_name,user_age, insertTime) values(#{userName},#{age}, #{insertTime})
     </insert>
 
     <update id="update" parameterMap="User">
@@ -33,7 +35,7 @@
 
     <!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->
     <select id="findById" parameterType="int" resultMap="User">
-        select user_id id,user_name userName,user_age age from t_user where user_id=#{id}
+        select * from t_user where user_id=#{id}
     </select>
 
     <select id="findAll" resultMap="User">

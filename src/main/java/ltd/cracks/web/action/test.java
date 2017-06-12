@@ -66,7 +66,13 @@ public class test extends HttpServlet {
         user.setUserName("ceshi123");
         user.setAge("123");
         user.setId(10);
+        user.setInsertTime(new Timestamp(System.currentTimeMillis()));
         userService.insert(user);
+        User user1 = userService.findById(1);
+        user1.setAge("qqq");
+        userService.update(user1);
+        userService.delete(user1.getId());
+        List<User> users = userService.findAll();
         return view;
     }
 
