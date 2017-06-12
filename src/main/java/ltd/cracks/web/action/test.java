@@ -1,5 +1,7 @@
 package ltd.cracks.web.action;
 
+import ltd.cracks.service.front.product.Product;
+import ltd.cracks.service.front.product.ProductService;
 import ltd.cracks.service.front.user.User;
 import ltd.cracks.service.front.user.UserDao;
 import ltd.cracks.service.front.user.UserService;
@@ -38,10 +40,10 @@ public class test extends HttpServlet {
     private mongoService mongoService;
 
     @Autowired
-    private UserDao userDao;
+    private UserService userService;
 
     @Autowired
-    private UserService userService;
+    private ProductService productService;
 
     private static final Logger logger = LoggerFactory.getLogger(test.class);
 
@@ -62,17 +64,23 @@ public class test extends HttpServlet {
         ModelAndView view = new ModelAndView("hello");
         ArrayList<Document> list = mongoService.findDocuments("test");
         view.addObject("data",list);
+        // 测试userservice
         User user = new User();
         user.setUserName("ceshi123");
         user.setAge("123");
         user.setId(10);
         user.setInsertTime(new Timestamp(System.currentTimeMillis()));
         userService.insert(user);
-        User user1 = userService.findById(1);
-        user1.setAge("qqq");
-        userService.update(user1);
-        userService.delete(user1.getId());
         List<User> users = userService.findAll();
+        //测试productservice
+        Product product = new Product();
+        product.setInsertTime(new Timestamp(System.currentTimeMillis()));
+        product.setMessage("message");
+        product.setOwner(String.valueOf(user.getId()));
+        product.setOther("other");
+        product.setTitle("title");
+        productService.save(product);
+        List<Product> products = productService.findAll();
         return view;
     }
 
@@ -116,6 +124,7 @@ public class test extends HttpServlet {
         // 记录info级别的信息
         logger.info("This is info message.");
         // 记录error级别的信息
-        logger.error("This is error message.");             }
+        logger.error("This is error message.");
+    }
 
 }

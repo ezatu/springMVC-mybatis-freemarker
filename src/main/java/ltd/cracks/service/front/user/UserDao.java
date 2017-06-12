@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * Created by macos on 2017/6/9.
  */
+@Service
 @Transactional
 public interface UserDao {
 

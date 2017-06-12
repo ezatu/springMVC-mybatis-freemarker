@@ -10,6 +10,8 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
+    <context:property-placeholder location="WEB-INF/jdbc.properties" />
+
     <!-- 1. 数据源 : DriverManagerDataSource -->
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -24,7 +26,6 @@
     -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"></property>
-        <!--<property name="configLocation" value="WEB-INF/mybatis-config.xml" />-->
         <property name="mapperLocations" value="classpath*:mappers/*.xml" />
     </bean>
     <!--
@@ -32,7 +33,7 @@
         basePackage:指定sql映射文件/接口所在的包（自动扫描）
     -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="ltd.cracks.service.front.user"></property>
+        <property name="basePackage" value="ltd.cracks.service.front"></property>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
     <!--
@@ -46,6 +47,5 @@
          transaction-manager：引用上面定义的事务管理器
      -->
     <tx:annotation-driven transaction-manager="transactionManager" />
-
 
 </beans>
