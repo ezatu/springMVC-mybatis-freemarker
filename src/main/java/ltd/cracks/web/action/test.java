@@ -2,7 +2,7 @@ package ltd.cracks.web.action;
 
 import ltd.cracks.service.front.user.User;
 import ltd.cracks.service.front.user.UserDao;
-import ltd.cracks.service.front.user.UserDaoImpl;
+import ltd.cracks.service.front.user.UserService;
 import ltd.cracks.util.*;
 import ltd.cracks.service.mongo.mongoService;
 import org.bson.Document;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServlet;
@@ -41,6 +40,9 @@ public class test extends HttpServlet {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private UserService userService;
+
     private static final Logger logger = LoggerFactory.getLogger(test.class);
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -64,7 +66,7 @@ public class test extends HttpServlet {
         user.setUserName("ceshi123");
         user.setAge("123");
         user.setId(10);
-        userDao.save(user);
+        userService.insert(user);
         return view;
     }
 
