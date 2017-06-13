@@ -8,9 +8,8 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.10.xsd
 http://www.springframework.org/schema/data/repository http://www.springframework.org/schema/data/repository/spring-repository-1.5.xsd">
 
-
     <!-- 加载mongodb的属性配置文件 -->
-    <context:property-placeholder location="WEB-INF/mongo.properties" />
+    <context:property-placeholder location="WEB-INF/mongo.properties" ignore-unresolvable="true" />
 
     <mongo:mongo-client host="${mongo.host}" port="${mongo.port}"
                         id="mongo">
