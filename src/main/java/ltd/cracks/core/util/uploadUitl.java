@@ -23,10 +23,8 @@ public class uploadUitl {
         }
     }
     // 获取上传文件并写入本地
-    public static void writeTo(String filename, byte[] body, Position p)
-            throws FileNotFoundException, IOException {
-        FileOutputStream fileOutputStream =
-                new FileOutputStream(UPLOAD_DIRECTORY + filename);
+    public static void writeTo(String filename, byte[] body, Position p) throws FileNotFoundException, IOException {
+        FileOutputStream fileOutputStream = new FileOutputStream(UPLOAD_DIRECTORY + filename);
         fileOutputStream.write(body, p.begin, (p.end - p.begin));
         fileOutputStream.flush();
         fileOutputStream.close();

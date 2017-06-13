@@ -1,5 +1,8 @@
 package ltd.cracks.web.action.index;
 
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.BucketInfo;
 import ltd.cracks.core.util.uploadUitl;
 import ltd.cracks.service.front.product.Product;
 import ltd.cracks.service.front.product.ProductService;
@@ -29,6 +32,9 @@ import java.util.*;
 @Controller
 public class IndexAction {
 
+    // 注入阿里云OSSClient管理实例
+    @Autowired
+    private OSSClient ossClient;
     // 注入mongoService实例
     @Autowired
     private mongoService mongoService;
@@ -44,8 +50,8 @@ public class IndexAction {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(HttpServletRequest request, ModelMap map) throws Exception {
         logger.info("start request");
-        System.out.print(logger.isDebugEnabled());
-        logger.debug("dsfjaslfkasdkfjdasfjdasjfslkajfdasl");
+        BucketInfo bucketInfo = ossClient.getBucketInfo("cracks");
+        ossClient.putObject("cracks","filename.docx",new File("/Users/macos/Desktop/icity_icp.docx"));
         ArrayList<Document> list = mongoService.findDocuments("test");
         String code = request.getParameter("code");
         System.out.println(code);

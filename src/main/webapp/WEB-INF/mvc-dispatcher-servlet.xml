@@ -20,6 +20,12 @@
     <!-- 开启注解 -->
     <mvc:annotation-driven/>
 
+    <bean id="ossClient" class="com.aliyun.oss.OSSClient">
+        <constructor-arg name="endpoint" value="endpoint地址"/>
+        <constructor-arg name="accessKeyId" value="your accessKeyId"/>
+        <constructor-arg name="secretAccessKey" value="your secretAccessKey"/>
+    </bean>
+
     <!--视图解释器 -->
     <!--配置jsp视图解析器 -->
     <bean id="viewResolverJsp" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
