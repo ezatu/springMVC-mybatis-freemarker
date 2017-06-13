@@ -13,7 +13,9 @@
 
 6、集成log4j进行日志处理。
 
-7、集成mybatis配置（spring-mybatis.xml）。
+7、集成mybatis配置（spring-mybatis.xml）
+
+8、集成阿里云OSS，通过spring注入OSSClient实例bean
 
 部署环境：OSX+tomcat+CentOS7+mongoDB+IDEA
 
