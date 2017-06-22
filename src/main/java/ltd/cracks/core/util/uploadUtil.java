@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * Created by macos on 2017/6/8.
  */
-public class uploadUitl {
+public class uploadUtil {
     // 上传文件存储目录
     private static final String UPLOAD_DIRECTORY = "/Users/macos/Desktop/";
 

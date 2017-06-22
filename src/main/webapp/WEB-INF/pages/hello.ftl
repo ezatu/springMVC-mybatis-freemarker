@@ -8,10 +8,17 @@
 <button onclick="onclickBtn()"></button>
 <table>
 
-    <#list data as obj>
+    <#--<#list data as obj>-->
+        <#--<tr>-->
+            <#--<td><#if obj??>${obj.insertTime?date}<#else>when-missing</#if></td>-->
+            <#--<td><#if obj??>${obj.test!""}<#else>when-missing</#if></td>-->
+        <#--</tr>-->
+    <#--</#list>-->
+
+    <#list users as user>
         <tr>
-            <td><#if obj??>${obj.insertTime?date}<#else>when-missing</#if></td>
-            <td><#if obj??>${obj.test!""}<#else>when-missing</#if></td>
+            <td><#if user??>${user.insertTime?date}<#else>when-missing</#if></td>
+            <td><#if user??>${user.userName!""}<#else>when-missing</#if></td>
         </tr>
     </#list>
 </table>

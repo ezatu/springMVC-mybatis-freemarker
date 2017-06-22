@@ -29,22 +29,19 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDaoImpl userDao;
 
-    // 日志实例
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
-
     @Override
-    public int insert(User user) {
-        return userDao.insert(user);
+    public void insert(User user) {
+        userDao.insert(user);
     }
 
     @Override
-    public int update(User user) {
-        return userDao.update(user);
+    public void update(User user) {
+        userDao.update(user);
     }
 
     @Override
-    public int delete(int id) {
-        return userDao.delete(id);
+    public void delete(int id) {
+        userDao.delete(id);
     }
 
     @Override

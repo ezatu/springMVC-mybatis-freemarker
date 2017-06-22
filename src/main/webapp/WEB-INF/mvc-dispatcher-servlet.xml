@@ -8,7 +8,7 @@
     <!--指明 controller 所在包，并扫描其中的注解-->
     <context:component-scan base-package="ltd.cracks.web.action" />
     <context:component-scan base-package="ltd.cracks.service" />
-    <!--<context:component-scan base-package="ltd.cracks.service.front" />-->
+    <context:component-scan base-package="ltd.cracks.core.base" />
 
 
     <!-- 静态资源(js、image等)的访问 -->

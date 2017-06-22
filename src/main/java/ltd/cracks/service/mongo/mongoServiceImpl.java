@@ -1,7 +1,7 @@
 package ltd.cracks.service.mongo;
 
 import com.mongodb.*;
-import ltd.cracks.core.util.coverLocalTime;
+import ltd.cracks.core.util.timeUtil;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -27,7 +27,7 @@ public class mongoServiceImpl implements mongoService {
         System.out.print(mongoTemplate);
         BasicDBObject object = BasicDBObject.parse(new Document().toJson());
         object.append("test",10);
-        object.append("insertTime", new Timestamp(coverLocalTime.coverLocalTime(System.currentTimeMillis())));
+        object.append("insertTime", new Timestamp(timeUtil.coverLocalTime(System.currentTimeMillis())));
         DBCollection collection = mongoTemplate.getCollection("test");
         collection.insert(object);
         DBCursor cursor = collection.find();
