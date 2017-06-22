@@ -14,6 +14,46 @@
 
   <dependencies>
 
+    <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.springframework/spring-aspects &ndash;&gt;-->
+    <!--<dependency>-->
+      <!--<groupId>org.springframework</groupId>-->
+      <!--<artifactId>spring-aspects</artifactId>-->
+      <!--<version>4.3.7.RELEASE</version>-->
+    <!--</dependency>-->
+
+    <!--&lt;!&ndash; https://mvnrepository.com/artifact/aopalliance/aopalliance &ndash;&gt;-->
+    <!--<dependency>-->
+      <!--<groupId>aopalliance</groupId>-->
+      <!--<artifactId>aopalliance</artifactId>-->
+      <!--<version>1.0</version>-->
+    <!--</dependency>-->
+
+    <!--<dependency>-->
+      <!--<groupId>cglib</groupId>-->
+      <!--<artifactId>cglib</artifactId>-->
+      <!--<version>2.2</version>-->
+    <!--</dependency>-->
+    <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.aspectj/aspectjweaver &ndash;&gt;-->
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+      <version>1.6.9</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-dbcp2 -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-dbcp2</artifactId>
+      <version>2.1.1</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-aop -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aop</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>com.aliyun.oss</groupId>
       <artifactId>aliyun-sdk-oss</artifactId>

@@ -5,22 +5,22 @@
     namespace：必须与对应的接口全类名一致
     id:必须与对应接口的某个对应的方法名一致
  -->
-<mapper namespace="ltd.cracks.service.front.user.UserDao">
+<mapper namespace="front.user">
 
     <resultMap id="User" type="ltd.cracks.service.front.user.User">
         <id column="user_id" property="id" jdbcType="BIGINT"/>
         <result column="user_name" property="userName" jdbcType="BIGINT"/>
         <result column="user_age" property="age" jdbcType="VARCHAR"/>
-        <result column="insertTime" property="insertTime" jdbcType="TIMESTAMP" />
+        <result column="insertTime" property="insertTime" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
     </resultMap>
     <parameterMap id="User" type="ltd.cracks.service.front.user.User">
         <parameter property="id" jdbcType="BIGINT"/>
         <parameter property="userName" jdbcType="VARCHAR"/>
         <parameter property="age" jdbcType="VARCHAR"/>
-        <parameter property="insertTime" jdbcType="TIMESTAMP" />
+        <parameter property="insertTime" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
     </parameterMap>
 
-    <insert id="save" parameterMap="User">
+    <insert id="insert" parameterMap="User">
         insert into t_user(user_name,user_age, insertTime) values(#{userName},#{age}, #{insertTime})
     </insert>
 
@@ -37,7 +37,7 @@
     </select>
 
     <select id="findAll" resultMap="User">
-        select user_id id,user_name userName,user_age age from t_user
+        select user_id id,user_name userName,user_age age,insertTime from t_user
     </select>
 
 </mapper>

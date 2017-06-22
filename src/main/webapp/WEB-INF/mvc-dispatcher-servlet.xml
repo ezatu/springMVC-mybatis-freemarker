@@ -6,13 +6,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <!--指明 controller 所在包，并扫描其中的注解-->
-    <context:component-scan base-package="ltd.cracks.web.action"/>
-    <context:component-scan base-package="ltd.cracks.service"/>
+    <context:component-scan base-package="ltd.cracks.web.action" />
+    <context:component-scan base-package="ltd.cracks.service" />
     <!--<context:component-scan base-package="ltd.cracks.service.front" />-->
-    <!--引入mongodb配置文件-->
-    <import resource="spring-mongo.xml" />
-    <!--引入mybatis配置文件-->
-    <import resource="spring-mybatis.xml" />
+
 
     <!-- 静态资源(js、image等)的访问 -->
     <mvc:default-servlet-handler/>
@@ -21,9 +18,9 @@
     <mvc:annotation-driven/>
 
     <bean id="ossClient" class="com.aliyun.oss.OSSClient">
-        <constructor-arg name="endpoint" value="endpoint地址"/>
-        <constructor-arg name="accessKeyId" value="your accessKeyId"/>
-        <constructor-arg name="secretAccessKey" value="your secretAccessKey"/>
+        <constructor-arg name="endpoint" value="oss-cn-qingdao.aliyuncs.com"/>
+        <constructor-arg name="accessKeyId" value="LTAIw7z6B1tr29zr"/>
+        <constructor-arg name="secretAccessKey" value="khj5sMsNk6oAlb15E6V4DJCVG29IGV"/>
     </bean>
 
     <!--视图解释器 -->
@@ -70,4 +67,10 @@
 
     <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
 
+    <!-- 配置上传文件所需的解析器 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="1046666000"/>
+        <property name="maxInMemorySize" value="4096" />
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>
 </beans>

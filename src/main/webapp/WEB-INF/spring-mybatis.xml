@@ -2,23 +2,31 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-4.0.xsd
         http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
     <context:property-placeholder location="WEB-INF/jdbc.properties" ignore-unresolvable="true" />
 
     <!-- 1. 数据源 : DriverManagerDataSource -->
     <bean id="dataSource"
-          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+          class="org.apache.commons.dbcp2.BasicDataSource">
         <property name="driverClassName" value="${jdbc.driver}" />
         <property name="url" value="${jdbc.url}" />
+        <property name="defaultAutoCommit" value="false" />
         <property name="username" value="${jdbc.username}" />
         <property name="password" value="${jdbc.password}" />
+        <property name="maxWaitMillis" value="${jdbc.maxWait}" />
+        <property name="initialSize" value="${jdbc.initialSize}" />
+        <property name="minIdle" value="${jdbc.minIdle}" />
+        <property name="maxIdle" value="${jdbc.maxIdle}" />
     </bean>
     <!--
         2. mybatis的SqlSession的工厂: SqlSessionFactoryBean dataSource:引用数据源
@@ -37,15 +45,40 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
     <!--
-        4. 事务管理 : DataSourceTransactionManager dataSource:引用上面定义的数据源
-    -->
-    <bean id="transactionManager"
+    4. 事务管理 : DataSourceTransactionManager dataSource:引用上面定义的数据源
+-->
+    <bean id="txManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"></property>
     </bean>
     <!-- 5. 使用声明式事务
          transaction-manager：引用上面定义的事务管理器
      -->
-    <tx:annotation-driven transaction-manager="transactionManager" />
+    <tx:annotation-driven transaction-manager="txManager" />
 
+    <!--&lt;!&ndash; ================================事务相关控制=================================================    &ndash;&gt;-->
+    <!--<bean name="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+        <!--<property name="dataSource" ref="dataSource"></property>-->
+    <!--</bean>-->
+
+    <!--<tx:advice id="userTxAdvice" transaction-manager="transactionManager">-->
+        <!--<tx:attributes>-->
+            <!--<tx:method name="delete*" propagation="REQUIRED" read-only="false"-->
+                       <!--rollback-for="java.lang.Exception" no-rollback-for="java.lang.RuntimeException"/>-->
+            <!--<tx:method name="insert*" propagation="REQUIRED" read-only="false"-->
+                       <!--rollback-for="java.lang.RuntimeException" />-->
+            <!--<tx:method name="update*" propagation="REQUIRED" read-only="false"-->
+                       <!--rollback-for="java.lang.Exception" />-->
+            <!--<tx:method name="save*" propagation="REQUIRED" read-only="false"-->
+                       <!--rollback-for="java.lang.RuntimeException" />-->
+            <!--<tx:method name="find*" propagation="SUPPORTS"/>-->
+            <!--<tx:method name="get*" propagation="SUPPORTS"/>-->
+            <!--<tx:method name="select*" propagation="SUPPORTS"/>-->
+        <!--</tx:attributes>-->
+    <!--</tx:advice>-->
+
+    <!--<aop:config>-->
+        <!--<aop:pointcut id="pc" expression="execution(public * ltd.cracks.service.front.user.UserDao.*.*(..))" /> &lt;!&ndash;把事务控制在Service层&ndash;&gt;-->
+        <!--<aop:advisor pointcut-ref="pc" advice-ref="userTxAdvice" />-->
+    <!--</aop:config>-->
 </beans>
