@@ -18,24 +18,24 @@ import java.util.Iterator;
 @Service
 public class mongoServiceImpl implements mongoService {
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
-
-    @Override
-    public ArrayList<Document> findDocuments(String colName) {
-        ArrayList<Document> result = new ArrayList<Document>();
-        System.out.print(mongoTemplate);
-        BasicDBObject object = BasicDBObject.parse(new Document().toJson());
-        object.append("test",10);
-        object.append("insertTime", new Timestamp(timeUtil.coverLocalTime(System.currentTimeMillis())));
-        DBCollection collection = mongoTemplate.getCollection("test");
-        collection.insert(object);
-        DBCursor cursor = collection.find();
-        Iterator<DBObject> iterator = cursor.iterator();
-        while (iterator.hasNext()) {
-            DBObject dbObject = iterator.next();
-            result.add(Document.parse(dbObject.toString()));
-        }
-        return result;
-    }
+//    @Autowired
+//    private MongoTemplate mongoTemplate;
+//
+//    @Override
+//    public ArrayList<Document> findDocuments(String colName) {
+//        ArrayList<Document> result = new ArrayList<Document>();
+//        System.out.print(mongoTemplate);
+//        BasicDBObject object = BasicDBObject.parse(new Document().toJson());
+//        object.append("test",10);
+//        object.append("insertTime", new Timestamp(timeUtil.coverLocalTime(System.currentTimeMillis())));
+//        DBCollection collection = mongoTemplate.getCollection("test");
+//        collection.insert(object);
+//        DBCursor cursor = collection.find();
+//        Iterator<DBObject> iterator = cursor.iterator();
+//        while (iterator.hasNext()) {
+//            DBObject dbObject = iterator.next();
+//            result.add(Document.parse(dbObject.toString()));
+//        }
+//        return result;
+//    }
 }

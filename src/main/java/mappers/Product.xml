@@ -6,11 +6,12 @@
     id:必须与对应接口的某个对应的方法名一致
 
  -->
-<mapper namespace="ltd.cracks.service.front.product.ProductDao">
+<mapper namespace="front.product">
     <!--定义返回结果map-->
     <resultMap id="Product" type="ltd.cracks.service.front.product.Product">
         <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="owner" property="owner" jdbcType="VARCHAR"/>
+        <result column="ownerId" property="ownerId" jdbcType="BIGINT"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="message" property="message" jdbcType="VARCHAR"/>
         <result column="other" property="other" jdbcType="VARCHAR"/>
         <result column="insertTime" property="insertTime" jdbcType="TIMESTAMP" />
@@ -18,31 +19,36 @@
     <!--定义参数map-->
     <parameterMap id="Product" type="ltd.cracks.service.front.product.Product">
         <parameter property="id" jdbcType="BIGINT"/>
-        <parameter property="owner" jdbcType="VARCHAR"/>
+        <parameter property="ownerId" jdbcType="BIGINT"/>
+        <parameter property="title" jdbcType="VARCHAR"/>
         <parameter property="message" jdbcType="VARCHAR"/>
         <parameter property="other" jdbcType="VARCHAR"/>
         <parameter property="insertTime" jdbcType="TIMESTAMP" />
     </parameterMap>
 
-    <insert id="save" parameterMap="Product">
-        insert into t_product(owner,message, other,insertTime,title) values(#{owner},#{message},#{other}, #{insertTime},#{title})
+    <insert id="insert" parameterMap="Product">
+        insert into t_product(ownerId,message, other,insertTime,title) values(#{ownerId},#{message},#{other}, #{insertTime},#{title})
     </insert>
 
     <update id="update" parameterMap="Product">
-        update t_product set owner=#{owner},message=#{message},other=#{other} where id=#{id}
+        update t_product set ownerId=#{ownerId},message=#{message},other=#{other} where id=#{id}
     </update>
 
-    <delete id="delete" parameterType="int">
+    <delete id="delete" parameterType="java.lang.String">
         delete from t_product where id=#{id}
     </delete>
 
     <!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->
-    <select id="findById" parameterType="int" resultMap="Product">
+    <select id="findById" parameterType="java.lang.String" resultMap="Product">
         select * from t_product where id=#{id}
     </select>
 
     <select id="findAll" resultMap="Product">
         select * from t_product
+    </select>
+
+    <select id="findByOwnerId" parameterType="java.lang.String" resultMap="Product">
+        select * from t_product where ownerId = #{ownerId}
     </select>
 
 </mapper>

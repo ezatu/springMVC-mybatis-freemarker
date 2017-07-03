@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    namespace：必须与对应的接口全类名一致
+    id:必须与对应接口的某个对应的方法名一致
+ -->
+<mapper namespace="app.account">
+
+    <resultMap id="Account" type="ltd.cracks.service.front.account.Account">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="phoneNumber" property="phoneNumber" jdbcType="VARCHAR"/>
+        <result column="insertTime" property="insertTime" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+    </resultMap>
+
+    <parameterMap id="Account" type="ltd.cracks.service.front.account.Account">
+        <parameter property="id" jdbcType="VARCHAR"/>
+        <parameter property="username" jdbcType="VARCHAR"/>
+        <parameter property="password" jdbcType="VARCHAR"/>
+        <parameter property="phoneNumber" jdbcType="VARCHAR"/>
+        <parameter property="insertTime" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+    </parameterMap>
+
+    <insert id="insert" parameterMap="Account" useGeneratedKeys="true" keyProperty="id">
+        insert into t_account(id,username,password,insertTime,phoneNumber) values(#{id},#{username}, #{password}, #{insertTime}, #{phoneNumber})
+    </insert>
+
+    <update id="update" parameterMap="Account">
+        update t_account set id=#{id}
+        <if test="username != null and username !=''">
+            ,username=#{username}
+        </if>
+        <if test="password != null and password !=''">
+            ,password=#{password}
+        </if>
+        <if test="phoneNumber != null and phoneNumber !=''">
+            ,phoneNumber=#{phoneNumber}
+        </if>
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        delete from t_account where id=#{id}
+    </delete>
+
+    <select id="findById" parameterType="java.lang.String" resultMap="Account">
+        select * from t_account where id=#{id}
+    </select>
+
+    <select id="findAll" resultMap="Account">
+        select * from t_account
+    </select>
+
+    <select id="selectOne" parameterMap="Account" resultMap="Account">
+        select * from t_account where id=#{id}
+    </select>
+
+    <select id="selectList" parameterMap="Account" resultMap="Account">
+        select * from t_account where phoneNumber=#{phoneNumber} and password=#{password}
+    </select>
+
+</mapper>

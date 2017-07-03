@@ -1,14 +1,15 @@
 package ltd.cracks.web.action.index;
 
-import com.aliyun.oss.OSSClient;
-import ltd.cracks.core.util.uploadUtil;
-import ltd.cracks.service.front.product.ProductService;
+import ltd.cracks.service.front.account.AccountServiceImpl;
+import ltd.cracks.service.front.article.Article;
+import ltd.cracks.service.front.article.ArticleServiceImpl;
+import ltd.cracks.service.front.product.Product;
+import ltd.cracks.service.front.product.ProductServiceImpl;
 import ltd.cracks.service.front.user.User;
 import ltd.cracks.service.front.user.UserServiceImpl;
-import ltd.cracks.service.mongo.mongoService;
+import net.sf.json.JSONArray;
 import org.bson.Document;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,76 +32,117 @@ import java.util.*;
 @Controller
 public class IndexAction {
 
-    // 注入阿里云OSSClient管理实例
     @Autowired
-    private OSSClient ossClient;
-    // 注入mongoService实例
+    private ArticleServiceImpl articleService;
+
     @Autowired
-    private mongoService mongoService;
+    private AccountServiceImpl accountService;
+
     // 注入userService实例
     @Autowired
     private UserServiceImpl userService;
     // 注入productService实例
     @Autowired
-    private ProductService productService;
+    private ProductServiceImpl productService;
     // 日志实例
     private static final Logger logger = LoggerFactory.getLogger(IndexAction.class);
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(HttpServletRequest request, ModelMap map) throws Exception {
-        logger.info("start request");
-        ArrayList<Document> list = mongoService.findDocuments("test");
-        String code = request.getParameter("code");
-        System.out.println(code);
-        map.put("list",list);
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public void index(HttpServletRequest request, HttpServletResponse response) {
+        int page = Integer.valueOf(request.getParameter("page"));
+        Document result = new Document();
+        ArrayList<Document> data = new ArrayList<Document>();
+        List<Article> articles = null;
+        try {
+            Article tempArt = new Article();
+            tempArt.setPage(page);
+            articles = articleService.selectListByPage(tempArt);
+            for (Article art : articles) {
+                Document temp = new Document();
+                temp.put("comment",art.getComment());
+                temp.put("fav",art.getFav());
+                temp.put("artId",art.getId());
+                temp.put("title",art.getTitle());
+//                temp.put("content",art.getContent());
+                temp.put("insertTime",art.getInsertTime().toString());
+                temp.put("userId",art.getUserId());
+                temp.put("userName", accountService.findById(art.getUserId()).getUsername());
+                if (art.getImgs() != null) {
+                    String[] imgs = art.getImgs().split("@");
+                    ArrayList<String> imgurls = new ArrayList<String>();
+                    for (String url : imgs) {
+                        imgurls.add(url);
+                    }
+                    temp.put("imgs",imgurls);
+                }
+                data.add(temp);
+            }
+            result.put("code",200);
+            result.put("data", data);
+            result.put("status","success");
+            result.put("detail","刷新成功");
+        } catch (Exception e) {
+            result.put("code",400);
+            result.put("status","failure");
+            result.put("detail","刷新失败");
+        }
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            writer.write(result.toJson());
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            writer.close();
+        }
 
-//        BucketInfo bucketInfo = ossClient.getBucketInfo("cracks");
-//        ossClient.putObject("cracks","filename.docx",new File("/Users/macos/Desktop/icity_icp.docx"));
-
-        return "index";
     }
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
-    public ModelAndView status(HttpServletRequest request, HttpServletResponse response) {
+    public void status(HttpServletRequest request, HttpServletResponse response) {
             ModelAndView view = new ModelAndView("status");
             Document document = new Document();
             document.put("beian","success");
             document.put("nadi","failure");
             view.addObject("data",document);
-            return view;
         }
 
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    public ModelAndView hello(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void hello(HttpServletRequest request, HttpServletResponse response) throws Exception {
         ModelAndView view = new ModelAndView("hello");
-        ArrayList<Document> list = mongoService.findDocuments("test");
-        view.addObject("data",list);
         // 测试userservice
         User user = new User();
         user.setUserName("ceshi123");
         user.setAge("123");
-        user.setId(10);
         user.setInsertTime(new Timestamp(System.currentTimeMillis()));
         for (int i = 0; i < 5; i ++) {
             userService.insert(user);
+            logger.debug("userId =====" + String.valueOf(user.getId()) + "\n");
         }
+        Product product  = new Product();
+        product.setInsertTime(new Timestamp(System.currentTimeMillis()));
+        product.setMessage("message");
+        product.setOther("other");
+        product.setownerId(1);
+        product.setTitle("productId");
+        productService.insert(product);
+        List<Product> products = productService.findByOwnerId(1);
         userService.findAll();
-        User user1 = userService.findById(35);
-        userService.delete(35);
+//        User user1 = userService.findById(35);
+//        userService.delete(35);
         List<User> list1 = userService.findAll();
         view.addObject("users",list1);
-        return view;
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public void upload(@RequestParam MultipartFile file, HttpServletRequest request, HttpServletResponse response, ModelMap map) throws IOException {
-        byte[] body = uploadUtil.readBody(request);
+    public void upload(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response, ModelMap map) throws IOException {
+//        byte[] body = uploadUtil.readBody(request);
         logger.debug(file.getContentType()+"\n"+file.getOriginalFilename()+"\n"+file.getSize()+"\n"+file.getClass().toString());
-        String textBody = new String(body, "ISO-8859-1");
-        String filename = uploadUtil.getFilename(textBody);
-        uploadUtil.Position p = uploadUtil.getFilePosition(request, textBody);
-        uploadUtil.writeTo(filename, body, p);
-
+//        String textBody = new String(body, "ISO-8859-1");
+//        String filename = uploadUtil.getFilename(textBody);
+//        uploadUtil.Position p = uploadUtil.getFilePosition(request, textBody);
+//        uploadUtil.writeTo(filename, body, p);
         /**
          * 设置返回类型
          */
@@ -116,7 +158,6 @@ public class IndexAction {
             jsonObject.put("code",200);
             jsonObject.put("result",i);
             jsonObject.put("status",i+"success");
-            jsonArray.put(jsonObject);
         }
 
         // 返回结果

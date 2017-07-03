@@ -29,12 +29,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(String id) {
         delete("front.user.delete",id);
     }
 
     @Override
-    public User findById(int id) {
+    public User findById(String id) {
         return (User) findById("front.user.findById",id);
     }
 

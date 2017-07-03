@@ -9,7 +9,7 @@ public class Product {
 
     private int id;
     private String title;
-    private String owner;
+    private int ownerId;
     private String message;
     private String other;
     private Timestamp insertTime;
@@ -34,12 +34,12 @@ public class Product {
         this.title = title;
     }
 
-    public String getOwner() {
-        return owner;
+    public int getownerId() {
+        return ownerId;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setownerId(int ownerId) {
+        this.ownerId = ownerId;
     }
 
     public String getMessage() {

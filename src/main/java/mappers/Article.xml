@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    namespace：必须与对应的接口全类名一致
+    id:必须与对应接口的某个对应的方法名一致
+ -->
+<mapper namespace="app.article">
+
+    <resultMap id="Article" type="ltd.cracks.service.front.article.Article">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <id column="comment" property="comment" jdbcType="BIGINT"/>
+        <id column="fav" property="fav" jdbcType="BIGINT"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="userId" property="userId" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="imgs" property="imgs" jdbcType="VARCHAR"/>
+        <result column="insertTime" property="insertTime" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+    </resultMap>
+
+    <parameterMap id="Article" type="ltd.cracks.service.front.article.Article">
+        <parameter property="id" jdbcType="BIGINT"/>
+        <parameter property="page" jdbcType="BIGINT"/>
+        <parameter property="comment" jdbcType="BIGINT"/>
+        <parameter property="fav" jdbcType="BIGINT"/>
+        <parameter property="title" jdbcType="VARCHAR"/>
+        <parameter property="userId" jdbcType="VARCHAR"/>
+        <parameter property="content" jdbcType="VARCHAR"/>
+        <parameter property="imgs" jdbcType="VARCHAR"/>
+        <parameter property="insertTime" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+    </parameterMap>
+
+
+    <insert id="insert" parameterMap="Article" useGeneratedKeys="true" keyProperty="id">
+        insert into t_article(title,userId,content,insertTime,imgs) values(#{title},#{userId}, #{content}, #{insertTime}, #{imgs})
+    </insert>
+
+    <update id="update" parameterMap="Article">
+        update t_article set id=#{id}
+        <if test="title != null and title !=''">
+            ,title=#{title}
+        </if>
+        <if test="content != null and content !=''">
+            ,content=#{content}
+        </if>
+        <if test="comment != null and comment !=''">
+            ,comment=#{comment}
+        </if>
+        <if test="fav != null and fav !=''">
+            ,fav=#{fav}
+        </if>
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        delete from t_article where id=#{id}
+    </delete>
+
+    <select id="findById" parameterType="java.lang.String" resultMap="Article">
+        select * from t_article where id=#{id}
+    </select>
+
+    <select id="findAll" resultMap="Article">
+        select * from t_article order by insertTime DESC
+    </select>
+
+    <select id="selectOne" parameterMap="Article" resultMap="Article">
+        select * from t_article where id=#{id}
+    </select>
+
+    <select id="selectList" parameterMap="Article" resultMap="Article">
+        select * from t_article where userId=#{userId}
+    </select>
+
+    <select id="selectListByPage" parameterMap="Article" resultMap="Article">
+        select * from t_article order by insertTime desc limit #{page}
+    </select>
+
+</mapper>

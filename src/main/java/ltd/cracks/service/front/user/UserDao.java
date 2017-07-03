@@ -14,7 +14,7 @@ public interface UserDao {
 
     void insert(User user);
     void update(User user);
-    void delete(int id);
-    User findById(int id);
+    void delete(String id);
+    User findById(String id);
     List<User> findAll();
 }

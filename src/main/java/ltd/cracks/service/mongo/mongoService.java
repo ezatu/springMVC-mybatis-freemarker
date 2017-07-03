@@ -10,5 +10,5 @@ import java.util.ArrayList;
  * Created by macos on 2017/6/5.
  */
 public interface mongoService {
-    ArrayList<Document> findDocuments(String colName);
+//    ArrayList<Document> findDocuments(String colName);
 }

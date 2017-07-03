@@ -40,12 +40,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(String id) {
         userDao.delete(id);
     }
 
     @Override
-    public User findById(int id) {
+    public User findById(String id) {
         return userDao.findById(id);
     }
 

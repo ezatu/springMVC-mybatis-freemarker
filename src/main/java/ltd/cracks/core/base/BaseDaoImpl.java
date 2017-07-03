@@ -42,7 +42,7 @@ public class BaseDaoImpl implements BaseDao {
     }
 
     @Override
-    public void delete(String str, int id) {
+    public void delete(String str, String id) {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             session.delete(str,id);
@@ -55,14 +55,13 @@ public class BaseDaoImpl implements BaseDao {
     }
 
     @Override
-    public Object findById(String str, int id) {
+    public Object findById(String str, String id) {
         Object result = new Object();
         SqlSession session = sqlSessionFactory.openSession();
         try {
             result = session.selectOne(str,id);
         } catch (Exception e) {
             e.printStackTrace();
-            session.rollback(true);
         }
         session.commit();
         session.close();
@@ -75,6 +74,49 @@ public class BaseDaoImpl implements BaseDao {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             result = session.selectList(str);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        session.commit();
+        session.close();
+        return result;
+    }
+
+    @Override
+    public Object selectOne(String str, Object object) {
+        Object result = null;
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            result = session.selectOne(str,object);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        session.commit();
+        session.close();
+        return result;
+    }
+
+    @Override
+    public List selectList(String str, Object object) {
+        List result = null;
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            result = session.selectList(str,object);
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.rollback(true);
+        }
+        session.commit();
+        session.close();
+        return result;
+    }
+
+    @Override
+    public List selectListByPage(String str, Object object) {
+        List result = null;
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            result = session.selectList(str,object);
         } catch (Exception e) {
             e.printStackTrace();
             session.rollback(true);

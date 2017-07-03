@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    namespace：必须与对应的接口全类名一致
+    id:必须与对应接口的某个对应的方法名一致
+ -->
+<mapper namespace="app.accInfo">
+
+    <resultMap id="AccInfo" type="ltd.cracks.service.front.accinfo.AccInfo">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="BIGINT"/>
+        <result column="icon" property="icon" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="sign" property="sign" jdbcType="VARCHAR"/>
+        <result column="brithday" property="brithday" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <parameterMap id="AccInfo" type="ltd.cracks.service.front.accinfo.AccInfo">
+        <parameter property="id" jdbcType="VARCHAR"/>
+        <parameter property="sex" jdbcType="BIGINT"/>
+        <parameter property="icon" jdbcType="VARCHAR"/>
+        <parameter property="email" jdbcType="VARCHAR"/>
+        <parameter property="sign" jdbcType="VARCHAR"/>
+        <parameter property="brithday" jdbcType="VARCHAR"/>
+    </parameterMap>
+
+    <insert id="insert" parameterMap="AccInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into t_accinfo(id,sex,brithday,icon,sign,email) values(#{id},#{sex}, #{brithday}, #{icon}, #{sign},#{email})
+    </insert>
+
+    <update id="update" parameterMap="AccInfo">
+        update t_accinfo set id=#{id}
+        <if test="sex != null and sex !=''">
+            ,sex=#{sex}
+        </if>
+        <if test="brithday != null and brithday !=''">
+            ,brithday=#{brithday}
+        </if>
+        <if test="icon != null and icon !=''">
+            ,icon=#{icon}
+        </if>
+        <if test="sign != null and sign !=''">
+            ,sign=#{sign}
+        </if>
+        <if test="email != null and email !=''">
+            ,email=#{email}
+        </if>
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+        delete from t_accinfo where id=#{id}
+    </delete>
+
+    <select id="findById" parameterType="java.lang.String" resultMap="AccInfo">
+        select * from t_accinfo where id=#{id}
+    </select>
+
+    <select id="findAll" resultMap="AccInfo">
+        select * from t_accinfo
+    </select>
+
+    <select id="selectOne" parameterMap="AccInfo" resultMap="AccInfo">
+        select * from t_accinfo where id=#{id}
+    </select>
+
+    <select id="selectList" parameterMap="AccInfo" resultMap="AccInfo">
+        select * from t_accinfo where id=#{id}
+    </select>
+
+</mapper>

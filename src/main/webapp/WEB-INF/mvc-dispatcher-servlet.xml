@@ -10,7 +10,6 @@
     <context:component-scan base-package="ltd.cracks.service" />
     <context:component-scan base-package="ltd.cracks.core.base" />
 
-
     <!-- 静态资源(js、image等)的访问 -->
     <mvc:default-servlet-handler/>
 
