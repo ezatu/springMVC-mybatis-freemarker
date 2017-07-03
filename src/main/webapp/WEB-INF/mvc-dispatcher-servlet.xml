@@ -17,9 +17,9 @@
     <mvc:annotation-driven/>
 
     <bean id="ossClient" class="com.aliyun.oss.OSSClient">
-        <constructor-arg name="endpoint" value="oss-cn-qingdao.aliyuncs.com"/>
-        <constructor-arg name="accessKeyId" value="LTAIw7z6B1tr29zr"/>
-        <constructor-arg name="secretAccessKey" value="khj5sMsNk6oAlb15E6V4DJCVG29IGV"/>
+        <constructor-arg name="endpoint" value="endpoint"/>
+        <constructor-arg name="accessKeyId" value="accessKeyId"/>
+        <constructor-arg name="secretAccessKey" value="secretAccessKey"/>
     </bean>
 
     <!--视图解释器 -->
